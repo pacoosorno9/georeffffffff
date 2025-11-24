@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de ubicaciones</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Mapa de puntos de interes</h1>
+    <div id="map"></div>
+
+    <form id="place-form">
+        <input type="text" id="name" placeholder="Nombre del lugar" required/>
+        <input type="text" id="description" placeholder="Descripcion" required/>
+        <input type="hidden" id="lat"/>
+        <input type="hideen" id="lng"/>
+        <button type="submit">Guardar el lugar</button>
+    </form>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
