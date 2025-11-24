@@ -1,9 +1,16 @@
+require('dotenv').config();
+
 const bodyParser = require('body-parser');
 const express = require('express');
-const app = express();
 const cors = require('cors');
-const place = require('./routes/places');
 const mongoose = require('mongoose');
+
+const app = express();
+
+const MONGODB_URI = process.env.MONGODB_URI;
+const PORT = process.env.PORT || 3000;
+
+const place = require('./routes/places');
 
 app.use(cors());
 app.use(bodyParser.json());

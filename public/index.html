@@ -8,16 +8,18 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Mapa de puntos de interes</h1>
+    <h1>Mapa de puntos de interés</h1>
+
     <div id="map"></div>
 
     <form id="place-form">
         <input type="text" id="name" placeholder="Nombre del lugar" required/>
-        <input type="text" id="description" placeholder="Descripcion" required/>
+        <input type="text" id="description" placeholder="Descripción" required/>
         <input type="hidden" id="lat"/>
-        <input type="hideen" id="lng"/>
+        <input type="hidden" id="lng"/>
         <button type="submit">Guardar el lugar</button>
     </form>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="script.js"></script>
 </body>
