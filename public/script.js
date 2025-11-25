@@ -1,4 +1,4 @@
-// CENTRAR MAPA EN UN LUGAR REAL (León, GTO)
+// CENTRAR MAPA EN LEON 
 const map = L.map('map').setView([21.129, -101.686], 13);
 
 // Capa de OpenStreetMap
@@ -23,7 +23,7 @@ map.on('click', function(e) {
         .openPopup();
 });
 
-// Manejo del formulario
+// Crear lugar
 document.getElementById('place-form').addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -34,28 +34,100 @@ document.getElementById('place-form').addEventListener('submit', async (e) => {
 
     const response = await fetch('http://localhost:3000/api/places', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ name, description, lat, lng })
     });
 
     const data = await response.json();
     alert(data.message);
-    location.reload();
+    loadPlaces();
 });
 
-// Cargar lugares guardados desde el backend
+// BORRAR
+async function deletePlace(id) {
+    if (!confirm("¿Eliminar este lugar?")) return;
+
+    const res = await fetch(`http://localhost:3000/api/places/${id}`, {
+        method: "DELETE"
+    });
+
+    const data = await res.json();
+    alert(data.message);
+    loadPlaces();
+}
+
+// EDITAR
+async function editPlace(id) {
+    const name = prompt("Nuevo nombre:");
+    const description = prompt("Nueva descripción:");
+    const lat = prompt("Nueva latitud:");
+    const lng = prompt("Nueva longitud:");
+
+    const res = await fetch(`http://localhost:3000/api/places/${id}`, {
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ name, description, lat, lng })
+    });
+
+    const data = await res.json();
+    alert(data.message);
+    loadPlaces();
+}
+
+// MOSTRAR/OCULTAR TABLA
+document.getElementById("toggle-table").addEventListener("click", () => {
+    const table = document.getElementById("table-container");
+
+    if (table.style.display === "none") {
+        table.style.display = "block";
+        document.getElementById("toggle-table").innerText = "Ocultar lugares";
+    } else {
+        table.style.display = "none";
+        document.getElementById("toggle-table").innerText = "Mostrar todos los lugares";
+    }
+});
+
+// CARGAR MARCADORES Y TABLA
 async function loadPlaces() {
     const res = await fetch('http://localhost:3000/api/places');
     const places = await res.json();
 
+    // Limpia marcadores anteriores
+    map.eachLayer(layer => {
+        if (layer instanceof L.Marker) {
+            map.removeLayer(layer);
+        }
+    });
+
+    const tbody = document.querySelector("#places-table tbody");
+    tbody.innerHTML = "";
+
     places.forEach(place => {
         const [lng, lat] = place.location.coordinates;
 
+        // Marcador
         L.marker([lat, lng])
             .addTo(map)
-            .bindPopup(`<strong>${place.name}</strong><br>${place.description}`);
+            .bindPopup(`
+                <strong>${place.name}</strong><br>
+                ${place.description}<br><br>
+                <button onclick="editPlace('${place._id}')">Editar</button>
+                <button onclick="deletePlace('${place._id}')">Borrar</button>
+            `);
+
+        // Tabla
+        tbody.innerHTML += `
+            <tr>
+                <td>${place.name}</td>
+                <td>${place.description}</td>
+                <td>${lat}</td>
+                <td>${lng}</td>
+                <td>
+                    <button onclick="editPlace('${place._id}')">Editar</button>
+                    <button onclick="deletePlace('${place._id}')">Borrar</button>
+                </td>
+            </tr>
+        `;
     });
 }
 

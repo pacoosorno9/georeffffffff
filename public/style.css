@@ -30,3 +30,7 @@ button{
 button:hover{
     background-color: #204a99;
 }
+
+#place-form button {
+    margin-left: 5px;
+}

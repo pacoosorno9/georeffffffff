@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <h1>Mapa de puntos de interés</h1>
 
     <div id="map"></div>
@@ -18,7 +19,23 @@
         <input type="hidden" id="lat"/>
         <input type="hidden" id="lng"/>
         <button type="submit">Guardar el lugar</button>
+         <button id="toggle-table" type="button">Mostrar todos los lugares</button>
     </form>
+
+    <div id="table-container" style="display:none; margin-top:20px;">
+        <table id="places-table" border="1" style="width:90%; margin:auto;">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Lat</th>
+                    <th>Lng</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="script.js"></script>
